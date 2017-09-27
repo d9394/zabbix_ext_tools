@@ -37,7 +37,7 @@ else
     Do While stats_file.AtEndOfStream = False
 		str_AllFile=stats_file.ReadAll
 		if WScript.Arguments.count>2 then
-			Wscript.Echo strLine
+			Wscript.Echo str_AllFile
 		end if
 		if str_AllFile<>"" then
 			strarry=split(str_AllFile,vbcrlf)  
