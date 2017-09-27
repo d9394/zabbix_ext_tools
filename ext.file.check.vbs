@@ -49,6 +49,7 @@ end if
 return_code=""
 Set fso = CreateObject("Scripting.FileSystemObject")
 if WScript.Arguments(1)="1" then
+	'返回文件是否存在：1、存在；0、不存在
 	if fso.fileexists(file_path) then
 		return_code="1" 
 	else
@@ -56,6 +57,7 @@ if WScript.Arguments(1)="1" then
 	end if
 end if
 if WScript.Arguments(1)="2" then
+	'返回文件大小
 	if fso.fileexists(file_path) then
 		return_code=fso.GetFile(file_path).Size
 	else
@@ -63,8 +65,18 @@ if WScript.Arguments(1)="2" then
 	end if
 end if
 if WScript.Arguments(1)="3" then
+	'返回文件最后修改时间（YYYY-MM-DD HH:mm:SS）'
 	if fso.fileexists(file_path) then
 		return_code=fso.GetFile(file_path).DateLastModified
+	else
+		return_code="0"
+	end if
+end if
+if WScript.Arguments(1)="4" then
+	'返回文件最后修改时间（timestamp）'
+	if fso.fileexists(file_path) then
+		file_time=fso.GetFile(file_path).DateLastModified
+		return_code=DateDiff("s", "1970-01-01 00:00:00", file_time) - 8*60
 	else
 		return_code="0"
 	end if
