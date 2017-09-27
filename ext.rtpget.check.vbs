@@ -33,8 +33,7 @@ if not fso2.fileexists(file_rpt) then
 '	rptfile 不存在
 	return_code="9999" 
 else
-	set stats_file=fso2.opentextfile(file_rpt,1)
-    strLine = stats_file.ReadLine
+    set stats_file=fso2.opentextfile(file_rpt,1)
     Do While stats_file.AtEndOfStream = False
 		str_AllFile=stats_file.ReadAll
 		if WScript.Arguments.count>2 then
@@ -48,7 +47,7 @@ else
 					Wscript.Echo strLine
 				end if
 				str_split=split(strLine,"|")
-				if ubound(str_split)>4 then
+				if ubound(str_split)>7 then
 					if str_split(1)=date1 then
 						c=c+1
 						if str_split(4)="2" then
