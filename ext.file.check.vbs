@@ -12,19 +12,19 @@ yyyy=year(date1)
 mm=month(date1)
 dd=day(date1)
 
-if mm=10 then m="a"
-if mm=11 then m="b"
-if mm=12 then m="c"
-if mm<10 then m=cstr(mm)
+if mm=10 then sm="a"
+if mm=11 then sm="b"
+if mm=12 then sm="c"
+if mm<10 then sm=cstr(mm)
 if mm>9 then 
-	M=cstr(mm)
+	lM=cstr(mm)
 else 
-	M=right(mm,1)
+	lM=right(mm,1)
 end if
 if dd> 9 then
-	D=cstr(dd)
+	lD=cstr(dd)
 else
-	D=right(dd,1)
+	lD=right(dd,1)
 end if
 
 if weekday(date1)=6 then
@@ -36,9 +36,9 @@ end if
 file_path=replace(file_path,"'","")
 file_path=replace(file_path,"{yyyymmdd}",cstr(yyyy)+cstr(right("0"&mm,2))+cstr(right("0"&dd,2)))
 file_path=replace(file_path,"{yyyy-mm-dd}",cstr(yyyy)+"-"+cstr(right("0"&mm,2))+"-"+cstr(right("0"&dd,2)))
-file_path=replace(file_path,"{yyyy-M-D}",cstr(yyyy)+"-"+M+"-"+D)
-file_path=replace(file_path,"{mdd}",m+cstr(right("0"&dd,2)))
-file_path=replace(file_path,"{Mdd}",M+cstr(right("0"&dd,2)))
+file_path=replace(file_path,"{yyyy-M-D}",cstr(yyyy)+"-"+lM+"-"+lD)
+file_path=replace(file_path,"{mdd}",sm+cstr(right("0"&dd,2)))
+file_path=replace(file_path,"{Mdd}",lM+cstr(right("0"&dd,2)))
 file_path=replace(file_path,"{mmdd}",cstr(right("0"&mm,2))+cstr(right("0"&dd,2)))
 file_path=replace(file_path,"{yyyymmdd++}",CStr(Year(date2))&Right("0"&Month(date2),2)&Right("0"&Day(date2),2))
 
