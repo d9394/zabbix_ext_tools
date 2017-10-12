@@ -36,6 +36,7 @@ end if
 file_path=replace(file_path,"'","")
 file_path=replace(file_path,"{yyyymmdd}",cstr(yyyy)+cstr(right("0"&mm,2))+cstr(right("0"&dd,2)))
 file_path=replace(file_path,"{yyyy-mm-dd}",cstr(yyyy)+"-"+cstr(right("0"&mm,2))+"-"+cstr(right("0"&dd,2)))
+file_path=replace(file_path,"{yy-mm-dd}",right(cstr(yyyy),2)+"-"+cstr(right("0"&mm,2))+"-"+cstr(right("0"&dd,2)))
 file_path=replace(file_path,"{yyyy-M-D}",cstr(yyyy)+"-"+lM+"-"+lD)
 file_path=replace(file_path,"{mdd}",sm+cstr(right("0"&dd,2)))
 file_path=replace(file_path,"{Mdd}",lM+cstr(right("0"&dd,2)))
