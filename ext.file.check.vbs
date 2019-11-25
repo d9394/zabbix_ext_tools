@@ -82,6 +82,34 @@ if WScript.Arguments(1)="4" then
 		return_code="0"
 	end if
 end if
+					
+if WScript.Arguments(1)="5" then
+	'返回文件是否存在（支持带通配符的）'
+	return_code="0"
+	real_path=mid(file_path,1,instrrev(file_path,"\"))
+	real_filename=mid(file_path,instrrev(file_path,"\")+1)
+'	wscript.echo real_path & " || " & real_filename
+	patrn=real_filename
+	patrn=replace(patrn,".","\.")
+	patrn=replace(patrn,"?","[\W\w]{1}")
+	patrn=replace(patrn,"*","(.*?)")
+	patrn="^"& patrn & "$"
+	if fso.folderexists(real_path) then
+		mm=0
+		set mydir=fso.getfolder(real_path)
+		for each item in mydir.files
+			Set regEx = New RegExp ' 建立正则表达式。
+			regEx.Pattern = patrn ' 设置模式。
+			regEx.IgnoreCase = True ' 设置是否区分大小写。
+			regEx.Global = True ' 设置全程可用性。
+			Set Matches = regEx.Execute(item.name) ' 执行搜索。
+			if Matches.count > 0 then
+				return_code="1"
+			end if
+		next
+		set mydir=nothing
+	end if
+end if
 
 wscript.echo return_code
 
