@@ -150,24 +150,17 @@ if __name__ == "__main__":
 				#检查交易网关与交易所报单状态
 				data = check_query("QueryRunStatus","")
 				msg = COMMAND[0] + " : "
-				pos = data.find("orderCount")
-				msg += "委托数 : " + data[pos+11:data.find("\r\n",pos)]
-				pos = data.find("orderConfirmCount")
-				msg += "，确认数 : " + data[pos+18:data.find("\r\n",pos)]
-				pos = data.find("reportCount")
-				msg += "，回报数 : " + data[pos+12:data.find("\r\n",pos)]
-				pos = data.find("invalidOrderCount")
-				msg += "，错单数 : " + data[pos+18:data.find("\r\n",pos)]
-				pos = data.find("businessRejectCount")
-				msg += "，业务拒绝数 : " + data[pos+20:data.find("\r\n",pos)]
+				msg += "委托数 ：" + str(count_msg(data,"orderCount"))
+				msg += "，确认数 : " + str(count_msg(data,"orderConfirmCount"))
+				msg += "，回报数 : " + str(count_msg(data,"reportCount"))
+				msg += "，错单数 : " + str(count_msg(data,"invalidOrderCount"))
+				msg += "，业务拒绝数 : " + str(count_msg(data,"businessRejectCount"))
 			if COMMAND[3] == "14" :
 				#检查交易网关与交易所报单失败
 				data = check_query("QueryRunStatus","")
 				msg = COMMAND[0] + " : "
-				pos = data.find("invalidOrderCount")
-				msg += "错单数 : " + data[pos+18:data.find("\r\n",pos)]
-				pos = data.find("businessRejectCount")
-				msg += "，业务拒绝数 : " + data[pos+20:data.find("\r\n",pos)]
+				msg += "错单数 : " + str(count_msg(data,"invalidOrderCount"))
+				msg += "，业务拒绝数 : " + str(count_msg(data,"businessRejectCount"))
 
 	else :
 		msg = "登陆失败"
