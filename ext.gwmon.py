@@ -4,6 +4,7 @@
 import socket
 import sys
 import hashlib
+import re
 
 def create_socket(ip, port):
 	global s
@@ -44,22 +45,24 @@ def check_query(qfunction,parameter):
 	if DEBUG :
 		print "Send :%s" % message
 	s.sendall(message)
-	received = s.recv(16384)
+	temp = ""
+	received = ""
+	while 1:
+		temp = s.recv(8192)
+		received += temp
+		if temp.find("\r\n\r\n")>0 :
+			break
 	if DEBUG :
 		print "Received :%s" % received
 	return received
 
 def count_msg(source,target):
-	data = source
-	targetlen=len(target)
-	pos = 0
-	count = 0
-	while True:
-		pos = data.find(target,pos+targetlen)
-		if pos<0 :
-			break
-		count += int(data[pos+targetlen+1:data.find("\r\n",pos)])
-	return count
+	global DEBUG
+	p = re.compile("\." + target + "=(\d*)\\r\\n") 
+	result = re.findall(p, source)
+	if DEBUG :
+		print("Find %s result : %s" % (target, result))
+	return sum(map(int,result))
 
 if __name__ == "__main__":
 	global s, DEBUG
