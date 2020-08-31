@@ -58,11 +58,14 @@ def check_query(qfunction,parameter):
 
 def count_msg(source,target):
 	global DEBUG
-	p = re.compile("\." + target + "=(\d*)\\r\\n") 
-	result = re.findall(p, source)
-	if DEBUG :
-		print("Find %s result : %s" % (target, result))
-	return sum(map(int,result))
+	try:
+		p = re.compile("\." + target + "=(\d*)\\r\\n") 
+		result = re.findall(p, source)
+		if DEBUG :
+			print("Find %s result : %s" % (target, result))
+		return sum(map(int,result))
+	except :
+		return 0
 
 if __name__ == "__main__":
 	global s, DEBUG
@@ -98,21 +101,23 @@ if __name__ == "__main__":
 			if COMMAND[3] == "01" :
 				#检查行情网关柜台连接状态
 				data = check_query("QuerySessionStatus","")
-				pos = data.find("session.realtime_8016.status")
-				if data[pos+29:pos+30]=="1" :
-					pos1 = data.find("session.realtime_8016.peerAddress")
-					msg = COMMAND[0] + " 柜台行情已连接：" + data[ pos1+34:data.find("\r\n",pos1)]
-				else :
-				    msg = COMMAND[0] + " 柜台行情未连接！"
+				try:
+					if re.findall("session.realtime_8016.status=(\d)\\r\\n",data)[0]=="1" :
+						msg = COMMAND[0] + " 柜台行情已连接：" + re.findall("session.realtime_8016.peerAddress=(([0-9]|\.)*:[0-9]{1,5})\\r\\n", data)[0][0]
+					else :
+						msg = COMMAND[0] + " 柜台行情未连接！"
+				except :
+					msg = COMMAND[0] + " 柜台行情无数据！"
 			if COMMAND[3] == "02" :
 				#检查行情网关与交易所连接状态
 				data = check_query("QueryRunStatus","")
-				pos = data.find("startState")
-				if data[pos+11:pos+12]=="1" :
-					pos1 = data.find("serverAddress")
-					msg = COMMAND[0] + " 交易所行情已连接：" + data[pos1+14:data.find("\r\n",pos1)]
-				else :
-				    msg = COMMAND[0] + " 交易所行情未连接！"
+				try:
+					if re.findall("startState=(\d)\\r\\n",data)[0]=="1" :
+						msg = COMMAND[0] + " 交易所行情已连接：" + re.findall("serverAddress=(([0-9]|\.)*:[0-9]{1,5})\\r\\n", data)[0][0]
+					else :
+						msg = COMMAND[0] + " 交易所行情未连接！"
+				except :
+					msg = COMMAND[0] + " 交易所行情无数据！"
 			if COMMAND[3] == "03" :
 				#统计行情网关的接收包数
 				data = check_query("QueryRunStatus","")
@@ -131,21 +136,23 @@ if __name__ == "__main__":
 			if COMMAND[3] == "11" :
 				#检查交易网关柜台连接状态
 				data = check_query("QuerySessionStatus","")
-				pos = data.find("sessionStatus")
-				if data[pos+14:pos+15]=="1" :
-					pos1 = data.find("compId")
-					msg = COMMAND[0] + " 柜台交易已连接：" + data[ pos1+7:data.find("\r\n",pos1)]
-				else :
-				    msg = COMMAND[0] + " 柜台交易未连接！"
+				try :
+					if re.findall("sessionStatus=(\d)\\r\\n",data)[0]=="1" :
+						msg = COMMAND[0] + " 柜台交易已连接：" + re.findall("compId=(([0-9]|\.)*:[0-9]{1,5})\\r\\n", data)[0][0]
+					else :
+						msg = COMMAND[0] + " 柜台交易未连接！"
+				except :
+					msg = COMMAND[0] + " 柜台交易无数据！"
 			if COMMAND[3] == "12" :
 				#检查交易网关与交易所连接状态
 				data = check_query("QueryRunStatus","")
-				pos = data.find("commStatus")
-				if data[pos+11:pos+12]=="1" :
-					pos1 = data.find("serverAddress")
-					msg = COMMAND[0] + " 交易所交易已连接：" + data[pos1+14:data.find("\r\n",pos1)]
-				else :
-				    msg = COMMAND[0] + " 交易所交易未连接！"
+				try :
+					if re.findall("commStatus=(\d)\\r\\n",data)[0]=="1" :
+						msg = COMMAND[0] + " 交易所交易已连接：" + re.findall("serverAddress=(([0-9]|\.)*:[0-9]{1,5})\\r\\n", data)[0][0]
+					else :
+						msg = COMMAND[0] + " 交易所交易未连接！"
+				except :
+					msg = COMMAND[0] + " 交易所交易无数据！"
 			if COMMAND[3] == "13" :
 				#检查交易网关与交易所报单状态
 				data = check_query("QueryRunStatus","")
