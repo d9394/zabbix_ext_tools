@@ -138,7 +138,7 @@ if __name__ == "__main__":
 				data = check_query("QuerySessionStatus","")
 				try :
 					if re.findall("sessionStatus=(\d)\\r\\n",data)[0]=="1" :
-						msg = COMMAND[0] + " 柜台交易已连接：" + re.findall("compId=(([0-9]|\.)*:[0-9]{1,5})\\r\\n", data)[0][0]
+						msg = COMMAND[0] + " 柜台交易已连接：" + re.findall("\.compId=(\w+)\\r\\n", data)[0][0]
 					else :
 						msg = COMMAND[0] + " 柜台交易未连接！"
 				except :
